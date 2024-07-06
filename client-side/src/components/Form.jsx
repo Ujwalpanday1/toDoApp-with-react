@@ -5,8 +5,9 @@
 import React, { useState } from 'react'
 import Button from './Button'
 import axios from 'axios'
-const Form = ({inputArr,btnName,btntype="submit"}) => {
+const Form = ({formName,inputArr,btnName,btntype="submit"}) => {
 
+  
   let initialState=inputArr.reduce((acc,input)=>{
     acc[input.name]="";
     return acc;
@@ -23,13 +24,19 @@ const Form = ({inputArr,btnName,btntype="submit"}) => {
       return newObj;
 
     })
-    console.log(formData)
   }
-
   const submitHandler=(e)=>{
-    e.preventDefault();
-    axios.post("http://localhost:3000/",formData).then((response)=>{
-      console.log(response);
+
+    e.preventDefault(); 
+    axios.post(`http://localhost:3000/${formName}`,formData).then((response)=>{
+      if (response.status === 301 || response.status === 302) {
+        console.log(window.Headers.location)
+       
+      } else {
+        console.log(response.data);
+        // Continue with handling the response data
+      }
+
     }).catch((e)=>console.log(e))
     setData(initialState)
   }
