@@ -2,7 +2,7 @@ import React from 'react'
 import Form from "./Form"
 import Button from './Button'
 import { useState } from 'react'
-const Login = () => {
+const Login = ({setIsLoggedIn}) => {
   let [isLogin,setLogin]=useState(true);
   let content;
 
@@ -13,7 +13,7 @@ const Login = () => {
   if(isLogin){
     content= <div className='flex h-[calc(100vh-8rem)]  justify-center items-center'>
       <div className='h-64 w-1/2 flex flex-col justify-center'>
-      <Form formName="login" inputArr={[{type:"text", name:"username", placeholder:"Enter Username"},
+      <Form  setIsLoggedIn={setIsLoggedIn} formName="login" inputArr={[{type:"text", name:"username", placeholder:"Enter Username"},
         {type:"password", name:"password", placeholder:"Enter Password"}]} 
         btnName="Login" />
         <label className='text-center'>OR</label>
@@ -26,7 +26,7 @@ const Login = () => {
 
     content= <div className='flex h-[calc(100vh-8rem)]  justify-center items-center'>
       <div className='h-64 w-1/2 flex flex-col justify-center'>
-      <Form formName="signup" inputArr={
+      <Form setIsLoggedIn={setIsLoggedIn} formName="signup" inputArr={
         [
         {type:"text", name:"name", placeholder:"Enter name"},
         {type:"text", name:"username", placeholder:"Enter Username"},

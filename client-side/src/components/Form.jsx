@@ -5,14 +5,14 @@
 import React, { useState } from 'react'
 import Button from './Button'
 import axios from 'axios'
-const Form = ({formName,inputArr,btnName,btntype="submit"}) => {
+const Form = ({setIsLoggedIn,formName,inputArr,btnName,btntype="submit"}) => {
 
   
+
   let initialState=inputArr.reduce((acc,input)=>{
     acc[input.name]="";
     return acc;
   },{});
-  
 
   let [formData,setData]=useState(initialState);
   const changeHandler=(e)=>{
@@ -28,20 +28,15 @@ const Form = ({formName,inputArr,btnName,btntype="submit"}) => {
   const submitHandler=(e)=>{
 
     e.preventDefault(); 
-    axios.post(`http://localhost:3000/${formName}`,formData).then((response)=>{
-      if (response.status === 301 || response.status === 302) {
-        console.log(window.Headers.location)
-       
-      } else {
-        console.log(response.data);
-        // Continue with handling the response data
+    axios.post(`http://localhost:3000/${formName}`,formData,{withCredentials:true})
+    .then((response)=>{
+      if(response.status==200){
+        console.log(response.data)
+        setIsLoggedIn(true)
       }
-
-    }).catch((e)=>console.log(e))
+    }).catch((e)=>setIsLoggedIn(false))
     setData(initialState)
   }
-
-          
   return (
              <form className='flex flex-col space-y-4' onSubmit={submitHandler}>
              {inputArr.map((input, index) => (
@@ -54,7 +49,7 @@ const Form = ({formName,inputArr,btnName,btntype="submit"}) => {
                  name={input.name}
                  placeholder={input.placeholder}
                  value={formData[input.name]}
-                 
+                 required                 
                  onChange={changeHandler}
                />  </>
              ))}
@@ -62,5 +57,4 @@ const Form = ({formName,inputArr,btnName,btntype="submit"}) => {
            </form>
         )
 }
-
 export default Form
