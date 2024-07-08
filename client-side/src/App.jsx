@@ -4,7 +4,8 @@ import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { lazy, useState, useEffect } from 'react';
-
+import Loading from './components/Loading';
+import ErrorPage from './components/ErrorPage';
 const Home = lazy(() => import("./components/Home"));
 const Loginpage = lazy(() => import("./components/Loginpage"));
 
@@ -45,15 +46,12 @@ function App() {
   }, []);
 
   if(!checkedAuth){
-   return ( <div>loading</div>)
+   return ( <Loading/>)
   }
 
   if (error) {
     return (
-      <div>
-        <p>Error: {error}</p>
-        <p>The server is currently unavailable. Please try again later.</p>
-      </div>
+     <ErrorPage/>
     );
   }
 
